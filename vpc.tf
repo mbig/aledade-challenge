@@ -54,7 +54,7 @@ resource "aws_route_table" "dev-public-rt" {
 }
 
 # Assign the route table to the public Subnet
-resource "aws_route_table_association" "DEV-public-rt" {
+resource "aws_route_table_association" "dev-public-rt" {
   subnet_id = "${aws_subnet.dev-public-subnet.id}"
   route_table_id = "${aws_route_table.dev-public-rt.id}"
 }
