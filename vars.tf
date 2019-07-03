@@ -40,7 +40,10 @@ variable "private_subnet_cidr_prod" {
 
 variable "ami" {
   description = "AMI for EC2"
-  default = "ami-4fffc834"
+  default = "ami-0b898040803850657"
 }
 
-
+variable "key_path" {
+  description = "SSH Public Key path"
+  default = "/home/ec2-user/.ssh/id_rsa.pub"
+}
