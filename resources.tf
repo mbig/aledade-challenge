@@ -19,6 +19,8 @@ resource "aws_instance" "dev-postgresdb-instance" {
    subnet_id = "${aws_subnet.dev-private-subnet.id}"
    vpc_security_group_ids = ["${aws_security_group.dev-sgdb.id}"]
    source_dest_check = false
+   #Would  not do this in Prod, this is just for testing. Should be restricted to jumpbox in public subnet
+   associate_public_ip_address = true
 
   tags {
     Name = "dev postgresql instance"
@@ -33,6 +35,8 @@ resource "aws_instance" "prod-postgresdb-instance" {
    subnet_id = "${aws_subnet.prod-private-subnet.id}"
    vpc_security_group_ids = ["${aws_security_group.prod-sgdb.id}"]
    source_dest_check = false
+   #Would  not do this in Prod, this is just for testing. Should be restricted to jumpbox in public subnet
+   associate_public_ip_address = true
 
   tags {
     Name = "prod postgresql instance"
