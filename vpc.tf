@@ -96,7 +96,7 @@ resource "aws_security_group" "dev-sgweb" {
 
 # Define the security group for dev private subnet
 resource "aws_security_group" "dev-sgdb"{
-  name = "sg_DEV_DB"
+  name = "sg_dev_db"
   description = "Allow traffic from public subnet"
 
   ingress {
@@ -112,7 +112,7 @@ resource "aws_security_group" "dev-sgdb"{
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["${var.public_subnet_cidr_dev}"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   vpc_id = "${aws_vpc.dev-vpc.id}"
@@ -237,7 +237,7 @@ resource "aws_security_group" "prod-sgdb"{
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["${var.public_subnet_cidr_prod}"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   vpc_id = "${aws_vpc.prod-vpc.id}"
