@@ -61,7 +61,7 @@ resource "aws_route_table_association" "DEV-public-rt" {
 
 # Define the security group for dev public subnet
 resource "aws_security_group" "dev-sgweb" {
-  name = "vpc_DEV_web"
+  name = "vpc_dev_web"
   description = "Allow incoming HTTP connections & SSH access"
 
   ingress {
