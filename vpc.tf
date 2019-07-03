@@ -59,7 +59,7 @@ resource "aws_route_table_association" "DEV-public-rt" {
   route_table_id = "${aws_route_table.dev-public-rt.id}"
 }
 
-# Define the security group for public subnet
+# Define the security group for dev public subnet
 resource "aws_security_group" "dev-sgweb" {
   name = "vpc_DEV_web"
   description = "Allow incoming HTTP connections & SSH access"
@@ -94,9 +94,9 @@ resource "aws_security_group" "dev-sgweb" {
   }
 }
 
-# Define the security group for private subnet
+# Define the security group for dev private subnet
 resource "aws_security_group" "dev-sgdb"{
-  name = "sg_DEV_web"
+  name = "sg_DEV_DB"
   description = "Allow traffic from public subnet"
 
   ingress {
@@ -118,7 +118,7 @@ resource "aws_security_group" "dev-sgdb"{
   vpc_id = "${aws_vpc.dev-vpc.id}"
 
   tags {
-    Name = "Postgres SG"
+    Name = "DEV Postgres SG"
   }
 }
 
@@ -144,7 +144,7 @@ resource "aws_subnet" "prod-public-subnet" {
   }
 }
 
-# Define the private subnet
+# Define the Prod private subnet
 resource "aws_subnet" "prod-private-subnet" {
   vpc_id = "${aws_vpc.prod-vpc.id}"
   cidr_block = "${var.private_subnet_cidr_prod}"
@@ -219,9 +219,9 @@ resource "aws_security_group" "prod-sgweb" {
   }
 }
 
-# Define the security group for private subnet
+# Define the security group for prod private subnet
 resource "aws_security_group" "prod-sgdb"{
-  name = "sg_prod_web"
+  name = "sg_prod_db"
   description = "Allow traffic from public subnet"
 
   ingress {
@@ -243,6 +243,6 @@ resource "aws_security_group" "prod-sgdb"{
   vpc_id = "${aws_vpc.prod-vpc.id}"
 
   tags {
-    Name = "Postgres SG"
+    Name = "Prod Postgres SG"
   }
 }
