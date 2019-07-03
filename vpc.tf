@@ -121,3 +121,128 @@ resource "aws_security_group" "dev-sgdb"{
     Name = "Postgres SG"
   }
 }
+
+
+# Define our prod VPC
+resource "aws_vpc" "prod-vpc" {
+  cidr_block = "${var.vpc_cidr_prod}"
+  enable_dns_hostnames = true
+
+  tags {
+    Name = "prod-vpc"
+  }
+}
+
+# Define the public subnet
+resource "aws_subnet" "prod-public-subnet" {
+  vpc_id = "${aws_vpc.prod-vpc.id}"
+  cidr_block = "${var.public_subnet_cidr_prod}"
+  availability_zone = "us-east-1a"
+
+  tags {
+    Name = "prod Public Subnet"
+  }
+}
+
+# Define the private subnet
+resource "aws_subnet" "prod-private-subnet" {
+  vpc_id = "${aws_vpc.prod-vpc.id}"
+  cidr_block = "${var.private_subnet_cidr_prod}"
+  availability_zone = "us-east-1b"
+
+  tags {
+    Name = "prod Private Subnet"
+  }
+}
+
+# Define the internet gateway
+resource "aws_internet_gateway" "prod-gw" {
+  vpc_id = "${aws_vpc.prod-vpc.id}"
+
+  tags {
+    Name = "prod VPC IGW"
+  }
+}
+
+# Define the route table
+resource "aws_route_table" "prod-public-rt" {
+  vpc_id = "${aws_vpc.prod-vpc.id}"
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_internet_gateway.prod-gw.id}"
+  }
+
+  tags {
+    Name = "prod Public Subnet RT"
+  }
+}
+
+# Assign the route table to the public Subnet
+resource "aws_route_table_association" "prod-public-rt" {
+  subnet_id = "${aws_subnet.prod-public-subnet.id}"
+  route_table_id = "${aws_route_table.prod-public-rt.id}"
+}
+
+# Define the security group for public subnet
+resource "aws_security_group" "prod-sgweb" {
+  name = "vpc_prod_web"
+  description = "Allow incoming HTTP connections & SSH access"
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks =  ["0.0.0.0/0"]
+  }
+
+  vpc_id="${aws_vpc.prod-vpc.id}"
+
+  tags {
+    Name = "prod Web SG"
+  }
+}
+
+# Define the security group for private subnet
+resource "aws_security_group" "prod-sgdb"{
+  name = "sg_prod_web"
+  description = "Allow traffic from public subnet"
+
+  ingress {
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    cidr_blocks = ["${var.public_subnet_cidr_prod}"]
+  }
+
+
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["${var.public_subnet_cidr_prod}"]
+  }
+
+  vpc_id = "${aws_vpc.prod-vpc.id}"
+
+  tags {
+    Name = "Postgres SG"
+  }
+}
