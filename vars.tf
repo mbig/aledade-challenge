@@ -6,10 +6,6 @@ variable "aws_region" {
 variable "AWS_ACCESS_KEY" {}
 variable "AWS_SECRET_KEY" {}
 
-#variable "aws_region" {}
-#  description = "Region for VPC"
-#  default = "us-east-1"
-#}
 
 variable "vpc_cidr_dev" {
   description = "CIDR for dev VPC"
