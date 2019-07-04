@@ -8,7 +8,7 @@ resource "aws_vpc" "dev-vpc" {
   }
 }
 
-# Define the public subnet
+# Define dev public subnet
 resource "aws_subnet" "dev-public-subnet" {
   vpc_id = "${aws_vpc.dev-vpc.id}"
   cidr_block = "${var.public_subnet_cidr_dev}"
@@ -19,7 +19,7 @@ resource "aws_subnet" "dev-public-subnet" {
   }
 }
 
-# Define the private subnet
+# Define dev private subnet
 resource "aws_subnet" "dev-private-subnet" {
   vpc_id = "${aws_vpc.dev-vpc.id}"
   cidr_block = "${var.private_subnet_cidr_dev}"
@@ -49,7 +49,7 @@ resource "aws_route_table" "dev-public-rt" {
   }
 
   tags {
-    Name = "DEV Public Subnet RT"
+    Name = "dev Public Subnet RT"
   }
 }
 
@@ -123,7 +123,7 @@ resource "aws_security_group" "dev-sgdb"{
 }
 
 
-# Define our prod VPC
+# Define  prod VPC
 resource "aws_vpc" "prod-vpc" {
   cidr_block = "${var.vpc_cidr_prod}"
   enable_dns_hostnames = true
@@ -133,22 +133,22 @@ resource "aws_vpc" "prod-vpc" {
   }
 }
 
-# Define the public subnet
+# Define prod public subnet
 resource "aws_subnet" "prod-public-subnet" {
   vpc_id = "${aws_vpc.prod-vpc.id}"
   cidr_block = "${var.public_subnet_cidr_prod}"
-  availability_zone = "us-east-1a"
+  availability_zone = "us-east-1c"
 
   tags {
     Name = "prod Public Subnet"
   }
 }
 
-# Define the Prod private subnet
+# Define  Prod private subnet
 resource "aws_subnet" "prod-private-subnet" {
   vpc_id = "${aws_vpc.prod-vpc.id}"
   cidr_block = "${var.private_subnet_cidr_prod}"
-  availability_zone = "us-east-1b"
+  availability_zone = "us-east-1d"
 
   tags {
     Name = "prod Private Subnet"
