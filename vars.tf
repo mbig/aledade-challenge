@@ -9,17 +9,17 @@ variable "AWS_SECRET_KEY" {}
 
 variable "vpc_cidr_dev" {
   description = "CIDR for dev VPC"
-  default = "10.0.0.0/16"
+  default = "200.0.0.0/16"
 }
 
 variable "public_subnet_cidr_dev" {
   description = "CIDR for dev public subnet"
-  default = "10.0.1.0/24"
+  default = "200.0.1.0/24"
 }
 
 variable "private_subnet_cidr_dev" {
   description = "CIDR for dev private subnet"
-  default = "10.0.2.0/24"
+  default = "200.0.2.0/24"
 }
 
 
