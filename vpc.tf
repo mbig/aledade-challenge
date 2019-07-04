@@ -1,4 +1,4 @@
-# Define our Dev VPC
+# Define  Dev VPC
 resource "aws_vpc" "dev-vpc" {
   cidr_block = "${var.vpc_cidr_dev}"
   enable_dns_hostnames = true
@@ -13,9 +13,10 @@ resource "aws_subnet" "dev-public-subnet" {
   vpc_id = "${aws_vpc.dev-vpc.id}"
   cidr_block = "${var.public_subnet_cidr_dev}"
   availability_zone = "us-east-1a"
+  map_public_ip_on_launch = true
 
   tags {
-    Name = "Dev Public Subnet"
+    Name = "dev-public-subnet"
   }
 }
 
@@ -26,7 +27,7 @@ resource "aws_subnet" "dev-private-subnet" {
   availability_zone = "us-east-1b"
 
   tags {
-    Name = "Dev Private Subnet"
+    Name = "dev-private-subnet"
   }
 }
 
@@ -35,7 +36,7 @@ resource "aws_internet_gateway" "dev-gw" {
   vpc_id = "${aws_vpc.dev-vpc.id}"
 
   tags {
-    Name = "DEV VPC IGW"
+    Name = "dev-vpc-igw"
   }
 }
 
@@ -49,7 +50,7 @@ resource "aws_route_table" "dev-public-rt" {
   }
 
   tags {
-    Name = "dev Public Subnet RT"
+    Name = "dev-public-subnet-route"
   }
 }
 
@@ -60,8 +61,8 @@ resource "aws_route_table_association" "dev-public-rt" {
 }
 
 # Define the security group for dev public subnet
-resource "aws_security_group" "dev-sgweb" {
-  name = "vpc_dev_web"
+resource "aws_security_group" "dev-sg" {
+  name = "dev_sg"
   description = "Allow incoming HTTP connections & SSH access"
 
   ingress {
@@ -78,7 +79,12 @@ resource "aws_security_group" "dev-sgweb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
+  ingress {
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    cidr_blocks = ["${var.public_subnet_cidr_dev}"]
+  }
 
   ingress {
     from_port = 22
@@ -87,16 +93,23 @@ resource "aws_security_group" "dev-sgweb" {
     cidr_blocks =  ["0.0.0.0/0"]
   }
 
+  egress {
+     from_port       = 0
+     to_port         = 0
+     protocol        = "-1"
+     cidr_blocks     = ["0.0.0.0/0"]
+   }
+
   vpc_id="${aws_vpc.dev-vpc.id}"
 
   tags {
-    Name = "DEV Web SG"
+    Name = "dev-sg"
   }
 }
 
 # Define the security group for dev private subnet
-resource "aws_security_group" "dev-sgdb"{
-  name = "sg_dev_db"
+resource "aws_security_group" "sg_dev_private"{
+  name = "sg_dev_private"
   description = "Allow traffic from public subnet"
 
   ingress {
@@ -107,20 +120,25 @@ resource "aws_security_group" "dev-sgdb"{
   }
 
 
-
   ingress {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.public_subnet_cidr_dev}"]
   }
-
+  egress {
+     from_port       = 0
+     to_port         = 0
+     protocol        = "-1"
+     cidr_blocks     = ["0.0.0.0/0"]
+   }
   vpc_id = "${aws_vpc.dev-vpc.id}"
 
   tags {
-    Name = "DEV Postgres SG"
+    Name = "sg-dev-private"
   }
 }
+
 
 
 # Define  prod VPC
@@ -138,9 +156,9 @@ resource "aws_subnet" "prod-public-subnet" {
   vpc_id = "${aws_vpc.prod-vpc.id}"
   cidr_block = "${var.public_subnet_cidr_prod}"
   availability_zone = "us-east-1c"
-
+  map_public_ip_on_launch = true
   tags {
-    Name = "prod Public Subnet"
+    Name = "prod-public-subnet"
   }
 }
 
@@ -151,7 +169,7 @@ resource "aws_subnet" "prod-private-subnet" {
   availability_zone = "us-east-1d"
 
   tags {
-    Name = "prod Private Subnet"
+    Name = "prod-private-subnet"
   }
 }
 
@@ -160,7 +178,7 @@ resource "aws_internet_gateway" "prod-gw" {
   vpc_id = "${aws_vpc.prod-vpc.id}"
 
   tags {
-    Name = "prod VPC IGW"
+    Name = "prod-vpc-igw"
   }
 }
 
@@ -174,7 +192,7 @@ resource "aws_route_table" "prod-public-rt" {
   }
 
   tags {
-    Name = "prod Public Subnet RT"
+    Name = "prod-public-subnet-route"
   }
 }
 
@@ -184,9 +202,9 @@ resource "aws_route_table_association" "prod-public-rt" {
   route_table_id = "${aws_route_table.prod-public-rt.id}"
 }
 
-# Define the security group for public subnet
-resource "aws_security_group" "prod-sgweb" {
-  name = "vpc_prod_web"
+# Define the security group for public prod subnet
+resource "aws_security_group" "prod-sg" {
+  name = "prod_sg"
   description = "Allow incoming HTTP connections & SSH access"
 
   ingress {
@@ -203,7 +221,12 @@ resource "aws_security_group" "prod-sgweb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
+  ingress {
+    from_port = 3306
+    to_port = 3306
+    protocol = "tcp"
+    cidr_blocks = ["${var.public_subnet_cidr_prod}"]
+  }
 
   ingress {
     from_port = 22
@@ -211,17 +234,23 @@ resource "aws_security_group" "prod-sgweb" {
     protocol = "tcp"
     cidr_blocks =  ["0.0.0.0/0"]
   }
+   egress {
+     from_port       = 0
+     to_port         = 0
+     protocol        = "-1"
+     cidr_blocks     = ["0.0.0.0/0"]
+   }
 
   vpc_id="${aws_vpc.prod-vpc.id}"
 
   tags {
-    Name = "prod Web SG"
+    Name = "prod-sg"
   }
 }
 
 # Define the security group for prod private subnet
-resource "aws_security_group" "prod-sgdb"{
-  name = "sg_prod_db"
+resource "aws_security_group" "sg_prod_private"{
+  name = "sg_prod_private"
   description = "Allow traffic from public subnet"
 
   ingress {
@@ -232,17 +261,22 @@ resource "aws_security_group" "prod-sgdb"{
   }
 
 
-
   ingress {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.public_subnet_cidr_prod}"]
   }
+    egress {
+     from_port       = 0
+     to_port         = 0
+     protocol        = "-1"
+     cidr_blocks     = ["0.0.0.0/0"]
+   }
 
   vpc_id = "${aws_vpc.prod-vpc.id}"
 
   tags {
-    Name = "Prod Postgres SG"
+    Name = "prod-sg-private"
   }
 }
