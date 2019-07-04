@@ -65,6 +65,7 @@ resource "aws_instance" "prod-bastion" {
    subnet_id = "${aws_subnet.prod-public-subnet.id}"
    vpc_security_group_ids = ["${aws_security_group.prod-sgweb.id}"]
    source_dest_check = false
+   associate_public_ip_address = true
 
 
   tags {
