@@ -1,1 +1,1 @@
-httpd_version: 2.2.29-1.4
+postgresql_max_connections: 30
