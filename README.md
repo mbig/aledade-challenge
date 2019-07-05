@@ -14,8 +14,8 @@
 ###### Git Clone the repository: https://github.com/mbig/aledade-challenge.git
 ###### Edit the vars.tf file and update region, vpc cidr, subnets as needed. Also provide a path to public and private keys.
 
-##### Run terraform init to download plugins
-##### Run terraform apply
-##### Enter Access key ID and Secret access key when prompted.
+###### Run terraform init to download plugins
+###### Run terraform apply
+###### Enter Access key ID and Secret access key when prompted.
 
 
