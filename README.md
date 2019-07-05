@@ -2,7 +2,7 @@
 
 ## How to run this program
 
-##Local system prerequisites  
+## Local system prerequisites  
 
     ##### Make sure ansible is installed (I used ansible 2.7.10)  
     ##### Make sure python is installed(Python 2.7.5)
