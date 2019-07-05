@@ -15,14 +15,29 @@ resource "aws_instance" "dev-postgresdb-instance" {
    ami  = "${var.ami}"
    instance_type = "t2.micro"
    key_name = "${aws_key_pair.dev-keypair.id}"
-   #subnet_id = "${aws_subnet.dev-private-subnet.id}"
-   #vpc_security_group_ids = ["${aws_security_group.dev-sgdb.id}"]
    subnet_id = "${aws_subnet.dev-public-subnet.id}"
    vpc_security_group_ids = ["${aws_security_group.dev-sg.id}"]
-   #source_dest_check = false
+
+   provisioner "remote-exec" {
+      inline = ["sudo yum update -y"]
+
+      connection {
+        type        = "ssh"
+        user        = "ec2-user"
+        private_key = "${file("${var.key_path_priv}")}"
+      }
+    }
+
+    provisioner "local-exec" {
+      command = "AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY} AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_KEY}  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '${file("${var.key_path_priv}")}' -i ec2.py deploy_postgresql_dev.yml"
+
+
+    }
+
 
   tags {
     Name = "dev-postgresql-instance"
+    env = "dev"
   }
 }
 
@@ -37,9 +52,25 @@ resource "aws_instance" "prod-postgresdb-instance" {
    subnet_id = "${aws_subnet.prod-public-subnet.id}"
    vpc_security_group_ids = ["${aws_security_group.prod-sg.id}"]
 
+   provisioner "remote-exec" {
+      inline = ["sudo yum update -y"]
 
+      connection {
+        type        = "ssh"
+        user        = "ec2-user"
+        private_key = "${file("${var.key_path_priv}")}"
+      }
+    }
+
+    provisioner "local-exec" {
+      #command = " ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '${file("${var.key_path_priv}")}' -i '${aws_instance.prod-postgresdb-instance.public_ip},' deploy_postgresql_dev.yml"
+      command = "AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY} AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_KEY} ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '${file("${var.key_path_priv}")}' -i ec2.py deploy_postgresql_prod.yml"
+
+
+    }
 
   tags {
     Name = "prod-postgresql-instance"
+    env  = "prod"
   }
 }
