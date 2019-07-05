@@ -9,6 +9,6 @@
     ##### Install boto (pip install boto) (boto (2.49.0)
     
 
-##### Git Clone the repository: https://github.com/mbig/aledade-challenge.git
-##### Edit the vars.tf file and update region, vpc cidr, subnets as needed. Also provide a path to public and private keys.
+###### Git Clone the repository: https://github.com/mbig/aledade-challenge.git
+###### Edit the vars.tf file and update region, vpc cidr, subnets as needed. Also provide a path to public and private keys.
 
