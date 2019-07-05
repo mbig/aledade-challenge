@@ -1,8 +1,39 @@
-- name: Install telnet
+- name: Install postgresql
   yum:
-    name=telnet
-    state=present
-- name: install one specific version of Apache
-  yum:
-    name: httpd-"{{ hostvars[groups['tag_env_prod'][0]]['httpd_version'] }}".amzn1
+    name:
+      - postgresql
+      - postgresql-server
+      - postgresql-libs
     state: present
+
+- name: Install python-psycopg2 module
+  yum:
+    name: python-psycopg2
+    state: present
+
+- name: Initialize db
+  command: postgresql-setup initdb
+  ignore_errors: yes
+
+- name: Setting postgresql max connections
+  lineinfile:
+    path: /var/lib/pgsql/data/postgresql.conf
+    regexp: '^max_connections ='
+    line: max_connections = {{ max_connections }}
+
+- name: Start postgresql service
+  service:
+    name: postgresql
+    state: started
+
+- name: Create db
+  become_user: postgres
+  postgresql_db:
+     name: db1
+
+- name: Create db users
+  become_user: postgres
+  postgresql_user:
+    db: db1
+    name: "{{ item.name }}"
+  with_items: "{{ db_users }}"
