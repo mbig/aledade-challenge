@@ -1,0 +1,13 @@
+---
+- name: install and configure postgresl
+  hosts: tag_Name_prod_postgresql_instance
+  become: yes
+  vars:
+      max_connections: "{{ hostvars[groups['tag_env_prod'][0]]['postgresql_max_connections'] }}"
+      db_users:
+        - name: admin
+          password: shrubbery
+          role_attr_flags: SUPERUSER
+        - name: service1
+  roles:
+    - postgresql
