@@ -45,10 +45,10 @@ variable "ami" {
 
 variable "key_path" {
   description = "SSH Public Key path"
-  default = "/home/gchongong/.ssh/id_rsa.pub"
+  default = "~/.ssh/id_rsa.pub"
 }
 
 variable "key_path_priv" {
   description = "SSH Public Key path"
-  default = "/home/gchongong/.ssh/id_rsa"
+  default = "~/.ssh/id_rsa"
 }
