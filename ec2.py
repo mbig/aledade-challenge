@@ -227,7 +227,7 @@ DEFAULTS = {
     'pattern_exclude': '',
     'pattern_include': '',
     'rds': 'False',
-    'regions': 'us-east-1',
+    'regions': 'all',
     'regions_exclude': 'us-gov-west-1, cn-north-1',
     'replace_dash_in_groups': 'True',
     'route53': 'False',
