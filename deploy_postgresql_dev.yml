@@ -1,5 +1,5 @@
 ---
-- name: install and configure postgresl
+- name: install and configure postgresql
   hosts: tag_Name_dev_postgresql_instance
   become: yes
   vars:
