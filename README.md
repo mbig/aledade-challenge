@@ -2,27 +2,17 @@
 
 ## How to run this program
 
-## Local system prerequisites  
-
     ##### Launch an AWS EC2 AMI2 instance
-    ##### Install ansible (sudo amazon-linux-extras install ansible2)  
-    ##### Install python2-pip and git (yum install python2-pip git)
-    ##### Install boto (pip install boto)
-    ##### Terraform (Terraform v0.11.8) - Use this version, looks other versions may show some bugs
-          https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip
+    ##### Install git (sudo yum install git -y )
+    ##### Clone code repo (git clone https://github.com/mbig/aledade-challenge.git)
+    ##### cd aledade-challenge
+    ##### chmod u+x setup.sh
+    ##### Run setup script(./setup.sh) -- This will install ansible, python2-pip, terraform, boto, create ssh-keys, terraform init) - hit n if ssh-keys already exists
+    ##### Edit the vars.tf file and update region, vpc cidr, subnets as needed.
+    ##### terraform apply
+    ##### Enter Access key ID and Secret access key when prompted
+    ##### Enter "yes" to perform terraform actions.
+    ##### terraform destroy (This will destroy the environment)
+    ##### Terminate EC2 instance
     
-
-###### Git clone the repository: https://github.com/mbig/aledade-challenge.git
-###### cd aledade-challenge
-###### wget https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip
-###### unzip terraform_0.11.8_linux_amd64.zip
-###### Edit the vars.tf file and update region, vpc cidr, subnets as needed. Also make sure ec2-user has public and private keys or any user you are using(ssh-keygen)
-
-###### Run terraform init to download plugins(./terraform init)
-###### Run terraform apply(./terraform apply)
-###### Enter Access key ID and Secret access key when prompted.
-
-###### Destroy environment (./terraform destroy)
-###### Remove ec2 instance 
-
 
