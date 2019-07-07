@@ -5,8 +5,8 @@
 ## Local system prerequisites  
 
     ##### Launch an AWS EC2 AMI2 instance
-    ##### Make sure ansible is installed (sudo amazon-linux-extras install ansible2)  
-    ##### Make sure python-pip and git (yum install python2-pip git)
+    ##### Install ansible (sudo amazon-linux-extras install ansible2)  
+    ##### Install python2-pip and git (yum install python2-pip git)
     ##### Install boto (pip install boto)
     ##### Terraform (Terraform v0.11.8) - Use this version, looks other versions may show some bugs
           https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip
