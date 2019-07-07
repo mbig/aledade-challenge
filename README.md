@@ -4,18 +4,22 @@
 
 ## Local system prerequisites  
 
-    ##### Make sure ansible is installed (I used ansible 2.7.10)  
-    ##### Make sure python is installed(Python 2.7.5)
-    ##### Install boto (pip install boto) (boto (2.49.0)
+    ##### Launch an AWS EC2 AMI2 instance
+    ##### Make sure ansible is installed (sudo amazon-linux-extras install ansible2)  
+    ##### Make sure python-pip and git (yum install python2-pip git)
+    ##### Install boto (pip install boto)
     ##### Terraform (Terraform v0.11.8) - Use this version, looks other versions may show some bugs
           https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip
     
 
-###### Git Clone the repository: https://github.com/mbig/aledade-challenge.git
-###### Edit the vars.tf file and update region, vpc cidr, subnets as needed. Also provide a path to public and private keys.
+###### Git clone the repository: https://github.com/mbig/aledade-challenge.git
+###### cd aledade-challenge
+###### wget https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip
+###### unzip terraform_0.11.8_linux_amd64.zip
+###### Edit the vars.tf file and update region, vpc cidr, subnets as needed. Also make sure ec2-user has public and private keys or any user you are using(ssh-keygen)
 
-###### Run terraform init to download plugins
-###### Run terraform apply
+###### Run terraform init to download plugins(./terraform init)
+###### Run terraform apply(./terraform apply)
 ###### Enter Access key ID and Secret access key when prompted.
 
 
