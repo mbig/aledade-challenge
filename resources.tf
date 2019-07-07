@@ -29,7 +29,8 @@ resource "aws_instance" "dev-postgresdb-instance" {
     }
 
     provisioner "local-exec" {
-      command = "AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY} AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_KEY}  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '${file("${var.key_path_priv}")}' -i ec2.py deploy_postgresql_dev.yml"
+      #command = "AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY} AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_KEY}  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '${file("${var.key_path_priv}")}' -i ec2.py deploy_postgresql_dev.yml"
+      command = "AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY} AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_KEY}  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '~/.ssh/id_rsa' -i ec2.py deploy_postgresql_dev.yml"
 
 
     }
@@ -64,7 +65,8 @@ resource "aws_instance" "prod-postgresdb-instance" {
 
     provisioner "local-exec" {
       
-      command = "AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY} AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_KEY} ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '${file("${var.key_path_priv}")}' -i ec2.py deploy_postgresql_prod.yml"
+      #command = "AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY} AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_KEY} ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '${file("${var.key_path_priv}")}' -i ec2.py deploy_postgresql_prod.yml"
+      command = "AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY} AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_KEY} ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key '~/.ssh/id_rsa' -i ec2.py deploy_postgresql_prod.yml"
 
 
     }
