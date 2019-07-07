@@ -22,4 +22,7 @@
 ###### Run terraform apply(./terraform apply)
 ###### Enter Access key ID and Secret access key when prompted.
 
+###### Destroy environment (./terraform destroy)
+###### Remove ec2 instance 
+
 
